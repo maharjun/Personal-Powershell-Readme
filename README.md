@@ -31,6 +31,45 @@ Contains all knowledge about Powershell and command line that i know.
     
         ${Function:Get-AliasPattern}
 
+5. *Access members of temporary objects*
+    
+    This is done by surrounding the command that generates the object with brackets 
+    (or by passing down the pipeline and calling `Get-Member` if you want to view all 
+    members). eg:
+
+        (Get-Alias).definition | clip
+        Get-Alias | Get-Member
+    
+6. *Sorting Array*
+
+    Look at `Sort-Object`
+
+7. *Loading a custom function*
+
+    You have to dot source them i.e. like below:
+
+        . .\build_funtions.ps1
+        . .\build_builddefs.ps1
+    
+8. *Remove a variable*
+
+    Use `Remove-Variable` as below
+    
+        $A = "New Variable"
+        Remove-Variable A
+    
+    Notice the lack of `$` when removing. this is because we are not reading the value of 
+    the symbol, merely erasing the symbol.
+    
+9.  *Using Assignment with Pipe*
+    
+    One can use assignment operator along with the pipe concatenator to store the final
+    result.
+    
+        $A = @(1,4,3,2,1,3) | Sort-Object | Get-Unique
+    
+    the result in `$A` is `1,2,3,4`
+    
 ## Arrays:
 
 ### Creating Arrays
@@ -247,6 +286,10 @@ in work, consider the following example
     
     $X
 
+The Capture group can also be accessed as:
+
+    $Matches['UniquePart']
+    
 The output is:
 
     Burn
@@ -254,7 +297,15 @@ The output is:
     Light
     Shine
     Screen
+    
+### Commands inside Strings
 
+Powershell allows us to insert commands inside strings in order to describe what to 
+compare against. The syntax is as follows.
+    
+    "$(Command requence returning object)other stuff"
+
+For example, the function `Get-AliasPattern git` returns
 ## Modules
 
 ### Importing modules
@@ -406,6 +457,77 @@ Renames an item in a Windows PowerShell provider namespace. e.g. renaming of a f
 
 #### Link
 [https://technet.microsoft.com/en-us/library/hh849763.aspx](https://technet.microsoft.com/en-us/library/hh849763.aspx)
+
+### Sort-Object
+#### Description
+Used to sort a list of objects by properties. Object is passes in pipeline. Default is 
+ascending order. for descending, use `-descending` flag.
+
+#### Examples
+
+1. Sorting a List of Numbers in Ascending order
+    
+        $A = @(1,2,4, 3, 5, 2, 1) | Sort-Object
+        $A
+    
+    Output is:
+        
+        1 1 2 2 3 4 5 <vertically>
+        
+2. Sort using property 
+
+        Get-EventLog system -newest 5 | Sort-Object eventid
+
+3. Sort in descending order
+
+        Get-EventLog system -newest 5 | Sort-Object eventid -descending
+
+4. Sort using pairs of properties
+
+        Get-ChildItem c:\scripts | Sort-Object extension,length
+   
+    Output:
+        
+        -a---          5/5/2006   9:09 PM      53358 tee.txt
+        -a---         5/15/2006   8:57 AM        377 new_excel.vbs
+        -a---         3/15/2006  10:23 AM        399 imapi.vbs
+        -a---          3/3/2006   2:46 PM        537 methods.vbs
+        -a---          3/3/2006   2:55 PM        698 read-write.vbs
+        -a---         3/11/2006  10:10 PM        978 imapi2.vbs
+        -a---         3/17/2006   8:21 AM       1105 winsat.vbs
+        -a---          5/5/2006   2:55 PM      19225 test.vbs
+        -a---          4/4/2006   8:30 AM    2616487 HoneyPie.wma
+
+#### Aliases
+
+    sort
+
+#### Link
+[Sort-Object](https://technet.microsoft.com/en-us/library/ee176968.aspx)
+
+### Get-Unique
+
+#### Description
+Given a sorted collection of items, the Get-Unique cmdlet returns just the unique items 
+in that collection. For Example.
+    
+    $A = @(1,4,2,3,1,4,2,2,3,1,4,3)
+    $A | Sort-Object | Get-Unique
+
+The Output is
+
+    1
+    2
+    3
+    4
+
+#### Aliases
+
+    gu
+
+#### Links
+
+[Get-Unique](https://technet.microsoft.com/en-us/library/ee176859.aspx)
 
 ### Compare-Object
 ### Get-History
