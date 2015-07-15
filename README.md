@@ -211,6 +211,50 @@ Contains all knowledge about Powershell and command line that i know.
 [Comparison Operators](https://technet.microsoft.com/en-us/library/hh847759.aspx)  
 [Logical Operators](http://www.techotopia.com/index.php/Basic_Windows_PowerShell_1.0_Operators#The_Addition_Operator)
 
+## Filtering
+
+### Where-Object
+
+This is used to filter objects from a collection using a criterion. It requires the 
+collection to be passed using Pipes
+
+e.g.
+
+    $ExeAliases = $AliasList | where{$_.definition -Match ".*\.exe"}
+
+This puts all Aliases into `$ExeAliases` which end in `.exe`
+
+## Regular Expressions
+
+### Named Capture groups
+
+In the case of normal regex, when we use `()` to capture something, we typically use a 
+number to refer to them, like `\1`. However, Powershell offers the ability to name these
+capture groups using the following syntax
+
+    (?<name> other regex)
+
+note that the angle brackets are not symbolic but actually a part of the syntax. To see it
+in work, consider the following example
+
+    $A = @( "SunBurn" , "SunBathe" , "SunLight",
+            "SunShine", "SunScreen")
+    
+    $A | ForEach-Object{
+        $_ -match "Sun(?<UniquePart>.*)"
+        $X += $Matches.UniquePart
+    }
+    
+    $X
+
+The output is:
+
+    Burn
+    Bathe
+    Light
+    Shine
+    Screen
+
 ## Modules
 
 ### Importing modules
