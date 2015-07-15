@@ -31,6 +31,90 @@ Contains all knowledge about Powershell and command line that i know.
     
         ${Function:Get-AliasPattern}
 
+## Arrays:
+
+### Creating Arrays
+1.  
+    To create an Array just separate the elements with commas. Create an array named `$myArray` containing elements with a mix of data types:
+
+        $myArray = 1,"Hello",3.5,"World"
+
+2.  
+    Or using explicit syntax:
+    
+        $myArray = @(1,"Hello",3.5,"World")
+    
+3.  
+    To distribute the values back into individual variables:
+
+        $var1,$var2,$var3,$var4=$myArray
+4.  
+    Create an array containing several numeric (int) values:
+
+        $myArray = 1,2,3,4,5,6,7
+    
+    or using the range operator (..):
+    
+        $myArray = (1..7)
+    
+    or strongly typed:
+
+        [int[]] $myArray = 12,64,8,64,12   
+
+5.  
+    Create an empty array:
+       
+        $myArray = @()
+
+6.  
+    Create an array with a single element:
+    
+        $myArray = @("Hello World")
+
+7.  
+    Create a Multi-dimensional array:
+
+        $myMultiArray = @(
+                     (1,2,3),
+                     (40,50,60)
+           )
+
+### Add Values to Arrays
+
+1.  *Concatenating Arrays -*
+    
+    This is done using the + operator. consider the following code:
+    
+        $A = @(1, 2)
+        $B = @(3, 4)
+        $C = $A + $B
+        $C
+    
+    This code outputs:
+        
+        1
+        2
+        3
+        4
+    
+2.  *Appending to the end of an Array -*
+    
+    As a corollary f the above, this is achieved by using the `+=` operator.
+
+### Retrieve elements from array.
+
+1.  Return All Elements:
+
+        $myArray
+
+2.  Return 3rd Element:
+
+        $myArray[3]
+
+3.  Return the 5th element through to the 10th element (inclusive) in an array:
+
+        $myArray[4..9]
+
 ## Common CmdLets:
 
 ### Set-Location
@@ -40,7 +124,7 @@ The `Set-Location` cmdlet is roughly equivalent to the `cd` command found in Cmd
 
     Set-Location c:\scripts
 
-However, you aren’t limited to navigating through the file system (for more information, see the Get-PSDrive cmdlet). For example, this command places you in the HKEY\_CURRENT\_USER\Software\Microsoft\Windows portion of the registry:
+However, you aren’t limited to navigating through the file system (for more information, see the `Get-PSDrive` cmdlet). For example, this command places you in the `HKEY_CURRENT_USER\Software\Microsoft\Windows` portion of the registry:
 
     Set-Location HKCU:\Software\Microsoft\Windows
 
